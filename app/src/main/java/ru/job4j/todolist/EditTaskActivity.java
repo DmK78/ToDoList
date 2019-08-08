@@ -8,12 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 public class EditTaskActivity extends Fragment {
-    private ConfirmSaveListener callback;
+    private EditTaskClickListener callback;
     private Task task;
-    private int indexTask;
+    private int indexTask=-1;
     private EditText editTextName, editTextDesc, editTextCreated, editTextClosed;
     private Button buttonSave, buttonCancel;
 
@@ -26,16 +25,18 @@ public class EditTaskActivity extends Fragment {
         editTextClosed = view.findViewById(R.id.editTextClosed);
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonCancel = view.findViewById(R.id.buttonCancel);
-
         if (getArguments() != null) {
             indexTask = getArguments().getInt("task");
             task = MainActivity.tasks.get(indexTask);
-            editTextName.setText(task.getName());
-            editTextDesc.setText(task.getDesc());
-            editTextCreated.setText(task.getCreated());
-            editTextClosed.setText(task.getClosed());
 
+        } else {
+            task = new Task("", "");
+            //indexTask = MainActivity.tasks.indexOf(task);
         }
+        editTextName.setText(task.getName());
+        editTextDesc.setText(task.getDesc());
+        editTextCreated.setText(task.getCreated());
+        editTextClosed.setText(task.getClosed());
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,14 +55,12 @@ public class EditTaskActivity extends Fragment {
                 callback.onCancelClick();
             }
         });
-
-
         return view;
     }
 
     public void onAttach(Context context) {
         super.onAttach(context);
-        callback = (ConfirmSaveListener) context; // назначаем активити при присоединении фрагмента к активити
+        callback = (EditTaskClickListener) context; // назначаем активити при присоединении фрагмента к активити
     }
 
     @Override
@@ -71,13 +70,9 @@ public class EditTaskActivity extends Fragment {
     }
 
 
-
-    public interface ConfirmSaveListener {
-
+    public interface EditTaskClickListener {
         void onSaveClick(Task task, int index);
 
-
         void onCancelClick();
-
     }
 }

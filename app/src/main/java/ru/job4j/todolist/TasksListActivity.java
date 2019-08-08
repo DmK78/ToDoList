@@ -2,6 +2,7 @@ package ru.job4j.todolist;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,24 +12,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
-
 import static ru.job4j.todolist.MainActivity.tasks;
 
 public class TasksListActivity extends Fragment {
     private RecyclerView recycler;
     private OnTaskSelectClickListener callback;
-
+    FloatingActionButton buttonAddTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_tasks_list, container, false);
         recycler = view.findViewById(R.id.recyclerViewTasks);
+        buttonAddTask=view.findViewById(R.id.floatingActionButton);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));// it was --- getApplicationContext()
         this.recycler.setAdapter(new TasksAdapter(getContext(), tasks));
-
-
+        buttonAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             callback.onAddTask();
+            }
+        });
         return view;
     }
 
@@ -43,11 +47,9 @@ public class TasksListActivity extends Fragment {
         callback = null; // обнуляем ссылку при отсоединении фрагмента от активити
     }
 
-
     public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TasksHolder> {
         private List<Task> tasks;
         private LayoutInflater inflater;
-
         TasksAdapter(Context context, List<Task> tasks) {
             this.inflater = LayoutInflater.from(context);
             this.tasks = tasks;
@@ -67,7 +69,6 @@ public class TasksListActivity extends Fragment {
             tasksHolder.textViewDesc.setText(task.getDesc());
             tasksHolder.textViewCreated.setText(task.getCreated());
             tasksHolder.textViewClosed.setText(task.getClosed());
-
         }
 
         @Override
@@ -92,7 +93,6 @@ public class TasksListActivity extends Fragment {
                 Toast.makeText(getContext(), " " + tasks.get(getAdapterPosition()).getName().toString(), Toast.LENGTH_SHORT).show();
                 callback.onTaskClicked(getAdapterPosition());
                 notifyDataSetChanged();
-
             }
         }
 
@@ -101,5 +101,6 @@ public class TasksListActivity extends Fragment {
 
     public interface OnTaskSelectClickListener {
         void onTaskClicked(int i);
+        void onAddTask();
     }
 }

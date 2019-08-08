@@ -5,4 +5,6 @@
     <string name="description">Description</string>
     <string name="created">Created</string>
     <string name="closed">Closed</string>
+    <string name="edit">EDIT</string>
+    <string name="delete">DELETE</string>
 </resources>
