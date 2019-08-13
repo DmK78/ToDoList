@@ -67,7 +67,8 @@ public class TasksListActivity extends Fragment {
             Task task = tasks.get(i);
             tasksHolder.textViewName.setText(task.getName());
             tasksHolder.textViewDesc.setText(task.getDesc());
-            tasksHolder.textViewCreated.setText(task.getCreated());
+            String taskDate = task.getCreated();
+            tasksHolder.textViewCreated.setText(taskDate.substring(taskDate.indexOf(',')+1,taskDate.lastIndexOf(',')));
             tasksHolder.textViewClosed.setText(task.getClosed());
         }
 

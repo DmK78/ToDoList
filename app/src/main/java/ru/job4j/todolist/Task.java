@@ -3,6 +3,7 @@ package ru.job4j.todolist;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Task {
 
@@ -48,5 +49,21 @@ public class Task {
 
     public void setClosed(String closed) {
         this.closed = closed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(name, task.name) &&
+                Objects.equals(desc, task.desc) &&
+                Objects.equals(created, task.created) &&
+                Objects.equals(closed, task.closed);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, desc, created, closed);
     }
 }
