@@ -8,53 +8,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import ru.job4j.todolist.db.Task;
+import ru.job4j.todolist.db.TasksRepository;
 
-public class EditTaskActivity extends Fragment {
+public class AddTaskFragment extends Fragment {
     private EditTaskClickListener callback;
     private Task task;
     private int indexTask=-1;
-    private EditText editTextName, editTextDesc, editTextCreated, editTextClosed;
-    private Button buttonSave, buttonCancel;
+    private EditText editTextName, editTextDesc;
+    private TextView textViewCreated, textViewClosed;
+    private Button buttonSave, buttonCancel, buttonDelete;
+    private TasksRepository tasksRepository = TasksRepository.getInstance(getContext());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_edit_task, container, false);
+        View view = inflater.inflate(R.layout.activity_open_task, container, false);
         editTextName = view.findViewById(R.id.editTextName);
         editTextDesc = view.findViewById(R.id.editTextDesc);
-        editTextCreated = view.findViewById(R.id.editTextCreated);
-        editTextClosed = view.findViewById(R.id.editTextClosed);
+        textViewCreated = view.findViewById(R.id.textViewCreated);
+        textViewClosed = view.findViewById(R.id.textViewClosed);
         buttonSave = view.findViewById(R.id.buttonSave);
+        buttonDelete=view.findViewById(R.id.buttonDelete);
+        buttonDelete.setVisibility(View.INVISIBLE);
         buttonCancel = view.findViewById(R.id.buttonCancel);
-        if (getArguments() != null) {
-            indexTask = getArguments().getInt("task");
-            task = MainActivity.tasks.get(indexTask);
-
-        } else {
             task = new Task("", "");
-            //indexTask = MainActivity.tasks.indexOf(task);
-        }
-        editTextName.setText(task.getName());
-        editTextDesc.setText(task.getDesc());
-        editTextCreated.setText(task.getCreated());
-        editTextClosed.setText(task.getClosed());
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 task.setName(editTextName.getText().toString());
                 task.setDesc(editTextDesc.getText().toString());
-                task.setCreated(editTextCreated.getText().toString());
-                task.setClosed(editTextClosed.getText().toString());
-                callback.onSaveClick(task, indexTask);
+                //task.setCreated(editTextCreated.getText().toString());
+                //task.setClosed(editTextClosed.getText().toString());
+                callback.onAddNewTaskClick(task);
 
             }
         });
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                callback.onCancelClick();
+                callback.onCancelAddNewTaskClick();
             }
         });
         return view;
@@ -73,8 +68,8 @@ public class EditTaskActivity extends Fragment {
 
 
     public interface EditTaskClickListener {
-        void onSaveClick(Task task, int index);
+        void onAddNewTaskClick(Task task);
 
-        void onCancelClick();
+        void onCancelAddNewTaskClick();
     }
 }

@@ -5,29 +5,25 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ru.job4j.todolist.db.Task;
+import ru.job4j.todolist.db.TasksRepository;
 
-public class MainActivity extends AppCompatActivity implements TasksListActivity.OnTaskSelectClickListener, EditTaskActivity.EditTaskClickListener, ViewTaskActivity.ViewTaskClickListener {
-    public static List<Task> tasks = new ArrayList<>();
+public class MainActivity extends AppCompatActivity implements TasksListFragment.OnTaskSelectClickListener, AddTaskFragment.EditTaskClickListener, EditTaskFragment.ViewTaskClickListener {
     private FragmentManager fm;
     private Fragment tasksListFragment;
     private Fragment editTaskFragment;
     private Fragment viewTaskFragment;
+    private TasksRepository tasksRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /*for (int i = 0; i < 100; i++) {
-            tasks.add(new Task("task" + i, "desc"));
-        }*/
+        tasksRepository = TasksRepository.getInstance(this);
         fm = getSupportFragmentManager(); // получить FragmentManager
         tasksListFragment = fm.findFragmentById(R.id.fragment_container);
         if (tasksListFragment == null) {
-            tasksListFragment = new TasksListActivity();
+            tasksListFragment = new TasksListFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container, tasksListFragment) // добавить фрагмент в контейнер
                     .commit();
@@ -39,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements TasksListActivity
         Bundle bundle = new Bundle();
         bundle.putInt("task", i);
         //if (editTaskFragment == null) {
-        viewTaskFragment = new ViewTaskActivity();
+        viewTaskFragment = new EditTaskFragment();
         //}
         viewTaskFragment.setArguments(bundle);
         fm.beginTransaction()
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements TasksListActivity
         /*Bundle bundle = new Bundle();
         bundle.putInt("task", index);*/
         //if (editTaskFragment == null) {
-        editTaskFragment = new EditTaskActivity();
+        editTaskFragment = new AddTaskFragment();
         //}
         // editTaskFragment.setArguments(bundle);
         fm.beginTransaction()
@@ -63,16 +59,57 @@ public class MainActivity extends AppCompatActivity implements TasksListActivity
 
     }
 
+
     @Override
-    public void onSaveClick(Task task, int index) {
-        if (index == -1) {
+    public void onUpdateTaskClick(Task task) {
+        tasksRepository.updateTask(task);
+        if (tasksListFragment == null) {
+            tasksListFragment = new TasksListFragment();
+        }
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, tasksListFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onDeleteTaskClick(Task task) {
+        //tasks.remove(index);
+        tasksRepository.deleteTask(task);
+        if (tasksListFragment == null) {
+            tasksListFragment = new TasksListFragment();
+        }
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, tasksListFragment)
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void onAddNewTaskClick(Task task) {
+/*        if (index == -1) {
             tasks.add(task);
         } else {
             tasks.remove(index);
             tasks.add(index, task);
-        }
+        }*/
+        tasksRepository.addTask(task);
+
         if (tasksListFragment == null) {
-            tasksListFragment = new TasksListActivity();
+            tasksListFragment = new TasksListFragment();
+        }
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, tasksListFragment)
+                .addToBackStack(null)
+                .commit();
+
+
+    }
+
+    @Override
+    public void onCancelAddNewTaskClick() {
+        if (tasksListFragment == null) {
+            tasksListFragment = new TasksListFragment();
         }
         fm.beginTransaction()
                 .replace(R.id.fragment_container, tasksListFragment)
@@ -81,35 +118,9 @@ public class MainActivity extends AppCompatActivity implements TasksListActivity
     }
 
     @Override
-    public void onEditClick(Task task, int index) {
-        Bundle bundle = new Bundle();
-        bundle.putInt("task", index);
-        //if (editTaskFragment == null) {
-        editTaskFragment = new EditTaskActivity();
-        //}
-        editTaskFragment.setArguments(bundle);
-        fm.beginTransaction()
-                .replace(R.id.fragment_container, editTaskFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onDeleteClick(int index) {
-        tasks.remove(index);
+    public void onCancelUpdateTaskClick() {
         if (tasksListFragment == null) {
-            tasksListFragment = new TasksListActivity();
-        }
-        fm.beginTransaction()
-                .replace(R.id.fragment_container, tasksListFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
-    @Override
-    public void onCancelClick() {
-        if (tasksListFragment == null) {
-            tasksListFragment = new TasksListActivity();
+            tasksListFragment = new TasksListFragment();
         }
         fm.beginTransaction()
                 .replace(R.id.fragment_container, tasksListFragment)

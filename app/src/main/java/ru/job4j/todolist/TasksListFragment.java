@@ -11,20 +11,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.job4j.todolist.db.Task;
 import ru.job4j.todolist.db.TasksRepository;
 
-import static ru.job4j.todolist.MainActivity.tasks;
 
-public class TasksListActivity extends Fragment {
+public class TasksListFragment extends Fragment {
     private RecyclerView recycler;
     private OnTaskSelectClickListener callback;
     private FloatingActionButton buttonAddTask;
     private TasksRepository tasksRepository;
+    private TasksAdapter tasksAdapter;
+    private List<Task> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,6 +35,9 @@ public class TasksListActivity extends Fragment {
         buttonAddTask = view.findViewById(R.id.floatingActionButton);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));// it was --- getApplicationContext()
         this.recycler.setAdapter(new TasksAdapter(getContext(), tasks));
+        tasks = tasksRepository.getAllTasks();
+        tasksAdapter = new TasksAdapter(getContext(), tasks);
+        recycler.setAdapter(tasksAdapter);
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,12 +76,18 @@ public class TasksListActivity extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull TasksHolder tasksHolder, int i) {
-            Task task = tasks.get(i);
+            final Task task = tasks.get(i);
             tasksHolder.textViewName.setText(task.getName());
             tasksHolder.textViewDesc.setText(task.getDesc());
             String taskDate = task.getCreated();
             tasksHolder.textViewCreated.setText(taskDate.substring(taskDate.indexOf(',') + 1, taskDate.lastIndexOf(',')));
             tasksHolder.textViewClosed.setText(task.getClosed());
+            tasksHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onTaskClicked(task.getId());
+                }
+            });
         }
 
         @Override
@@ -90,18 +100,18 @@ public class TasksListActivity extends Fragment {
 
             TasksHolder(View view) {
                 super(view);
-                textViewName = view.findViewById(R.id.textViewName);
-                textViewDesc = view.findViewById(R.id.textViewDesc);
+                textViewName = view.findViewById(R.id.editTextName);
+                textViewDesc = view.findViewById(R.id.editTextDesc);
                 textViewCreated = view.findViewById(R.id.textViewCreated);
                 textViewClosed = view.findViewById(R.id.textViewClosed);
-                itemView.setOnClickListener(this);
+                //itemView.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), " " + tasks.get(getAdapterPosition()).getName().toString(), Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getContext(), " " + tasks.get(getAdapterPosition()).getName().toString(), Toast.LENGTH_SHORT).show();
                 callback.onTaskClicked(getAdapterPosition());
-                notifyDataSetChanged();
+                notifyDataSetChanged();*/
             }
         }
 

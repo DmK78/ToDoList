@@ -65,7 +65,7 @@ public class TasksRepository {
         return result;
     }
 
-    public void saveTask(final Task task) {
+    public void addTask(final Task task) {
         class SaveBdActionTask extends AsyncTask<Void, Void, Void> {
             @Override
             protected Void doInBackground(Void... voids) {
