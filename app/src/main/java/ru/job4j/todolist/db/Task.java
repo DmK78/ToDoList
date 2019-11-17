@@ -1,12 +1,18 @@
-package ru.job4j.todolist;
+package ru.job4j.todolist.db;
+
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Objects;
 
+@Entity(tableName = "tasks")
 public class Task {
 
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     private String name;
     private String desc;
     private String created;
@@ -49,6 +55,14 @@ public class Task {
 
     public void setClosed(String closed) {
         this.closed = closed;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override

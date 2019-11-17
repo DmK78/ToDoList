@@ -8,6 +8,8 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.job4j.todolist.db.Task;
+
 public class MainActivity extends AppCompatActivity implements TasksListActivity.OnTaskSelectClickListener, EditTaskActivity.EditTaskClickListener, ViewTaskActivity.ViewTaskClickListener {
     public static List<Task> tasks = new ArrayList<>();
     private FragmentManager fm;

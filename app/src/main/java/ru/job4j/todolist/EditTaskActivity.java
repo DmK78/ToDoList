@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import ru.job4j.todolist.db.Task;
+
 public class EditTaskActivity extends Fragment {
     private EditTaskClickListener callback;
     private Task task;
