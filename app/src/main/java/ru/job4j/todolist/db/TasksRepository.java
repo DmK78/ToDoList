@@ -1,12 +1,15 @@
 package ru.job4j.todolist.db;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import ru.job4j.todolist.StoreCursor;
 
 public class TasksRepository {
 
@@ -35,6 +38,7 @@ public class TasksRepository {
     public AppDatabase getAppDatabase() {
         return appDatabase;
     }
+
 
 
     public List<Task> getAllTasks() {

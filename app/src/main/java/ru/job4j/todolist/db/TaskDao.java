@@ -7,6 +7,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.database.Cursor;
 
 import java.util.List;
 
@@ -18,11 +19,16 @@ import java.util.List;
  *  * @version $Id$
  */
 
+
 @Dao
 public interface TaskDao {
 
+
     @Query("SELECT * FROM tasks")
     List<Task> getAllTasks();
+
+    @Query("SELECT * FROM tasks")
+    Cursor getCursorAllTasks();
 
     @Query("SELECT * FROM tasks WHERE id == :id")
     Task getTaskById(int id);

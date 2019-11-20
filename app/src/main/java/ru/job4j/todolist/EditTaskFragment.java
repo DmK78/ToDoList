@@ -21,7 +21,8 @@ public class EditTaskFragment extends Fragment {
     private TextView textViewCreated, textViewClosed;
     private EditText editTextName, editTextDesc;
     private Button buttonUpdate, buttonCancel, buttonDelete;
-    TasksRepository tasksRepository = TasksRepository.getInstance(getContext());
+//    TasksRepository tasksRepository = TasksRepository.getInstance(getContext());
+    private DBHelper dbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
@@ -33,10 +34,12 @@ public class EditTaskFragment extends Fragment {
         buttonUpdate = view.findViewById(R.id.buttonSave);
         buttonDelete = view.findViewById(R.id.buttonDelete);
         buttonCancel = view.findViewById(R.id.buttonCancel);
+        dbHelper=DBHelper.getInstance(getContext());
 
         if (getArguments() != null) {
             indexTask = getArguments().getInt("task");
-            task=tasksRepository.getTaskById(indexTask);
+            //task=tasksRepository.getTaskById(indexTask);
+            task=dbHelper.getTask(indexTask);
             editTextName.setText(task.getName());
             editTextDesc.setText(task.getDesc());
             textViewCreated.setText(task.getCreated());

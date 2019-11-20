@@ -20,7 +20,7 @@ public class AddTaskFragment extends Fragment {
     private EditText editTextName, editTextDesc;
     private TextView textViewCreated, textViewClosed;
     private Button buttonSave, buttonCancel, buttonDelete;
-    private TasksRepository tasksRepository = TasksRepository.getInstance(getContext());
+//    private TasksRepository tasksRepository = TasksRepository.getInstance(getContext());
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class AddTaskFragment extends Fragment {
         buttonDelete=view.findViewById(R.id.buttonDelete);
         buttonDelete.setVisibility(View.INVISIBLE);
         buttonCancel = view.findViewById(R.id.buttonCancel);
-            task = new Task("", "");
+           task = new Task(0, "","","","");
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override

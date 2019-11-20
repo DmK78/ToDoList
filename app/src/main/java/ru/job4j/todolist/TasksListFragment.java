@@ -23,19 +23,21 @@ public class TasksListFragment extends Fragment {
     private RecyclerView recycler;
     private OnTaskSelectClickListener callback;
     private FloatingActionButton buttonAddTask;
-    private TasksRepository tasksRepository;
+    //private TasksRepository tasksRepository;
+    private DBHelper dbHelper;
     private TasksAdapter tasksAdapter;
     private List<Task> tasks = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_tasks_list, container, false);
-        tasksRepository = TasksRepository.getInstance(getContext());
+        //tasksRepository = TasksRepository.getInstance(getContext());
+        dbHelper=DBHelper.getInstance(getContext());
         recycler = view.findViewById(R.id.recyclerViewTasks);
         buttonAddTask = view.findViewById(R.id.floatingActionButton);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));// it was --- getApplicationContext()
         this.recycler.setAdapter(new TasksAdapter(getContext(), tasks));
-        tasks = tasksRepository.getAllTasks();
+        tasks = dbHelper.getAllTasks();
         tasksAdapter = new TasksAdapter(getContext(), tasks);
         recycler.setAdapter(tasksAdapter);
         buttonAddTask.setOnClickListener(new View.OnClickListener() {
