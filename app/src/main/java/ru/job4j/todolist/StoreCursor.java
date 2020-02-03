@@ -6,7 +6,7 @@ import ru.job4j.todolist.db.Task;
 import ru.job4j.todolist.db.TasksRepository;
 
 public class StoreCursor extends AbstractCursor {
-    private DBHelper dbHelper;
+    private final DBHelper dbHelper;
 
     public StoreCursor(DBHelper dbHelper) {
         this.dbHelper = dbHelper;
@@ -19,6 +19,7 @@ public class StoreCursor extends AbstractCursor {
 
     @Override
     public String[] getColumnNames() {
+
         return new String[]{"id", "name", "desc", "created", "closed"};
 
     }

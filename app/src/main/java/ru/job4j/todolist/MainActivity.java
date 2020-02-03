@@ -1,9 +1,11 @@
 package ru.job4j.todolist;
 
+import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.List;
 
@@ -21,10 +23,13 @@ public class MainActivity extends AppCompatActivity implements TasksListFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        List<Task> tasks = DBHelper.getInstance(getApplicationContext()).getAllTasks();
         setContentView(R.layout.activity_main);
-        //tasksRepository = TasksRepository.getInstance(this);
         dbHelper=DBHelper.getInstance(this);
+/*        Cursor cursor = getContentResolver()
+                .query(StoreContentProvider.CONTENT_URI, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            Log.d("ContentProvider", cursor.getString(1));
+        }*/
         fm = getSupportFragmentManager(); // получить FragmentManager
         tasksListFragment = fm.findFragmentById(R.id.fragment_container);
         if (tasksListFragment == null) {
@@ -51,19 +56,12 @@ public class MainActivity extends AppCompatActivity implements TasksListFragment
 
     @Override
     public void onAddTask() {
-        /*Bundle bundle = new Bundle();
-        bundle.putInt("task", index);*/
-        //if (editTaskFragment == null) {
         editTaskFragment = new AddTaskFragment();
-        //}
-        // editTaskFragment.setArguments(bundle);
         fm.beginTransaction()
                 .replace(R.id.fragment_container, editTaskFragment)
                 .addToBackStack(null)
                 .commit();
-
     }
-
 
     @Override
     public void onUpdateTaskClick(Task task) {

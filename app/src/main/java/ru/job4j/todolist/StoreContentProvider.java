@@ -25,7 +25,7 @@ public class StoreContentProvider extends ContentProvider {
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
 
-        return new StoreCursor(dbHelper);
+        return dbHelper.getAllTasksAsCursor();
     }
 
     @Nullable

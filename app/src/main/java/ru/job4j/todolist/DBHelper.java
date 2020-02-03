@@ -66,6 +66,18 @@ public class DBHelper extends SQLiteOpenHelper {
         return result;
     }
 
+    public Cursor getAllTasksAsCursor() {
+
+        Cursor cursor = dbRead.query(
+                DBchema.TasksTable.NAME,
+                null, null, null,
+                null, null, null
+        );
+
+        return cursor;
+    }
+
+
     public void addTask(Task task) {
         ContentValues value = new ContentValues();
         value.put(DBchema.TasksTable.Cols.NAME, task.getName());
