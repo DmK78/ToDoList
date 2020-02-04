@@ -1,10 +1,14 @@
 
 # О приложении
 Простое приложения Заметки
+
+
 В этом проекте используется:
 RoomDatabase
 # About
 Simple app Notes
+
+
 In this project are using:
 RoomDatabase
 
