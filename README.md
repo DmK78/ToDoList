@@ -1,12 +1,12 @@
 
 # О приложении
-Простое приложения Заметки
+Простое приложениe "Список дел"
 
 
 В этом проекте используется:
 RoomDatabase
 # About
-Simple app Notes
+Simple app "ToDoList"
 
 
 In this project are using:
